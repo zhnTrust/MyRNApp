@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myNewProject",
-    "slug": "myNewProject",
+    "name": "MyRNApp",
+    "slug": "MyRNApp",
     "platforms": [
       "ios",
       "android",
