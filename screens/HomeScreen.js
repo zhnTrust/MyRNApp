@@ -29,6 +29,10 @@ function mapDispatchToProps(dispatch) {
 }
 
 class HomeScreen extends React.Component {
+  static navigationOptions = {
+    headerShown: false
+  };
+
   state = {
     scale: new Animated.Value(1),
     opacity: new Animated.Value(1)
@@ -115,14 +119,20 @@ class HomeScreen extends React.Component {
               showsHorizontalScrollIndicator={false}
             >
               {cards.map((map, index) => (
-                <Card
+                <TouchableOpacity
                   key={index}
-                  title={map.title}
-                  image={map.image}
-                  caption={map.caption}
-                  logo={map.logo}
-                  subtitle={map.subtitle}
-                />
+                  onPress={() => {
+                    this.props.navigation.push("Section");
+                  }}
+                >
+                  <Card
+                    title={map.title}
+                    image={map.image}
+                    caption={map.caption}
+                    logo={map.logo}
+                    subtitle={map.subtitle}
+                  />
+                </TouchableOpacity>
               ))}
             </ScrollView>
             <Subtitle>Continue Learning</Subtitle>
