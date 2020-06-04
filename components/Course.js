@@ -10,7 +10,7 @@ const Course = (props) => (
       <Title>{props.title}</Title>
     </Cover>
     <Content>
-      <Avator source={props.avatar} />
+      <Avatar source={props.avatar} />
       <Caption>{props.caption}</Caption>
       <Author>Tought by {props.author}</Author>
     </Content>
@@ -75,7 +75,7 @@ const Content = styled.View`
   height: 75px;
 `;
 
-const Avator = styled.Image`
+const Avatar = styled.Image`
   border-radius: 16px;
   width: 32px;
   height: 32px;

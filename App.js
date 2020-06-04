@@ -5,20 +5,39 @@ import AppNavigator from "./navigator/AppNavigator";
 
 const initialState = {
   action: "closeMenu",
-  name: ""
+  name: "Stranger",
+  avatar: "http://p23.f4.n0.cdn.getcloudapp.com/items/DOuQlXJv/avatar_none.png"
 };
 
 const reducer = (state = initialState, action) => {
+  let newState = {};
   switch (action.type) {
     case "OPEN_MENU":
-      return { action: "openMenu" };
+      newState = { action: "openMenu" };
+      break;
     case "CLOSE_MENU":
-      return { action: "closeMenu" };
+      newState = { action: "closeMenu" };
+      break;
     case "UPDATE_NAME":
-      return { name: action.name };
-    default:
-      return state;
+      newState = { name: action.name };
+      break;
+    case "UPDATE_AVATAR":
+      newState = { avatar: action.avatar };
+      break;
+    case "OPEN_CARD":
+      newState = { action: "openCard" };
+      break;
+    case "CLOSE_CARD":
+      newState = { action: "closeCard" };
+      break;
+    case "OPEN_LOGIN":
+      newState = { action: "openLogin" };
+      break;
+    case "CLOSE_LOGIN":
+      newState = { action: "closeLogin" };
+      break;
   }
+  return { ...state, ...newState };
 };
 
 const store = createStore(reducer);

@@ -1,20 +1,21 @@
 import React from "react";
-import styled from "styled-components";
 import {
   Animated,
-  TouchableOpacity,
   Dimensions,
   StatusBar,
+  TouchableOpacity,
+  AsyncStorage
 } from "react-native";
+import { connect } from "react-redux";
+import styled from "styled-components";
 import {
-  CloseIcon,
-  SettingIcon,
   CardIcon,
+  CloseIcon,
   CompassIcon,
   ExitIcon,
+  SettingIcon
 } from "./Icons";
 import MenuItem from "./MenuItem";
-import { connect } from "react-redux";
 
 function mapStoreToProps(state) {
   return { action: state.action };
@@ -24,8 +25,25 @@ function mapDispatchToProps(dispatch) {
   return {
     closeMenu: () =>
       dispatch({
-        type: "CLOSE_MENU",
+        type: "CLOSE_MENU"
       }),
+    updataName: (name) => {
+      dispatch({
+        type: "UPDATE_NAME",
+        name
+      });
+    },
+    updateAvatar: (avatar) => {
+      const action = {
+        type: "UPDATE_AVATAR",
+        avatar
+      };
+      console.log(
+        "Menu -> mapDispatchToProps -> updateAvatar -> action",
+        action
+      );
+      dispatch(action);
+    }
   };
 }
 
@@ -34,7 +52,7 @@ const screenHeight = Dimensions.get("window").height + StatusBar.currentHeight;
 class Menu extends React.Component {
   state = {
     // 动画值
-    top: new Animated.Value(screenHeight),
+    top: new Animated.Value(screenHeight)
   };
 
   componentDidMount() {
@@ -49,14 +67,25 @@ class Menu extends React.Component {
     // 状态是打开，则关闭
     if (this.props.action == "openMenu") {
       Animated.spring(this.state.top, {
-        toValue: 54,
+        toValue: 54
       }).start();
     }
 
     if (this.props.action == "closeMenu") {
       Animated.spring(this.state.top, {
-        toValue: screenHeight,
+        toValue: screenHeight
       }).start();
+    }
+  };
+
+  handleMenu = (index) => {
+    if (index === 3) {
+      this.props.closeMenu();
+      this.props.updataName("Stranger");
+      this.props.updateAvatar(
+        "http://p23.f4.n0.cdn.getcloudapp.com/items/DOuQlXJv/avatar_none.png"
+      );
+      AsyncStorage.clear();
     }
   };
 
@@ -76,21 +105,23 @@ class Menu extends React.Component {
             top: 120,
             left: "50%",
             marginLeft: -22,
-            zIndex: 1,
+            zIndex: 1
           }}
         >
           <ClostView>
-            <CloseIcon color="#546bfb" />
+            <CloseIcon color="#546bfb" size={40} />
           </ClostView>
         </TouchableOpacity>
         <Content>
           {items.map((item, index) => (
-            <MenuItem
+            <TouchableOpacity
               key={index}
-              icon={item.icon}
-              title={item.title}
-              text={item.text}
-            />
+              onPress={() => {
+                this.handleMenu(index);
+              }}
+            >
+              <MenuItem icon={item.icon} title={item.title} text={item.text} />
+            </TouchableOpacity>
           ))}
         </Content>
       </AnimatedContainer>
@@ -161,21 +192,21 @@ const items = [
   {
     icon: <SettingIcon />,
     title: "Account",
-    text: "settings",
+    text: "settings"
   },
   {
     icon: <CardIcon />,
     title: "Billing",
-    text: "payments",
+    text: "payments"
   },
   {
     icon: <CompassIcon />,
     title: "Learn React",
-    text: "start course",
+    text: "start course"
   },
   {
     icon: <ExitIcon />,
     title: "log out",
-    text: "see you soon?",
-  },
+    text: "see you soon?"
+  }
 ];

@@ -1,19 +1,20 @@
 import React from "react";
 import {
+  Animated,
+  Easing,
   ScrollView,
   StatusBar,
-  TouchableOpacity,
-  Animated,
-  Easing
+  TouchableOpacity
 } from "react-native";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import Avatar from "../components/Avatar";
 import Card from "../components/card";
+import Course from "../components/Course";
 import { NotificationIcon } from "../components/Icons";
 import Logo from "../components/Logo";
-import Course from "../components/Course";
 import Menu from "../components/Menu";
-import { connect } from "react-redux";
-import Avatar from "../components/Avatar";
+import ModalLogin from "../components/ModalLogin";
 
 function mapStateToProps(state) {
   return { action: state.action, name: state.name };
@@ -24,6 +25,10 @@ function mapDispatchToProps(dispatch) {
     openMenu: () =>
       dispatch({
         type: "OPEN_MENU"
+      }),
+    openLogin: () =>
+      dispatch({
+        type: "OPEN_LOGIN"
       })
   };
 }
@@ -78,6 +83,14 @@ class HomeScreen extends React.Component {
     }
   };
 
+  handleAvatar = () => {
+    if (this.props.name !== "Stranger") {
+      this.props.openMenu();
+    } else {
+      this.props.openLogin();
+    }
+  };
+
   render() {
     return (
       <RootView>
@@ -92,7 +105,7 @@ class HomeScreen extends React.Component {
           <ScrollView>
             <TitleBar>
               <TouchableOpacity
-                onPress={this.props.openMenu}
+                onPress={this.handleAvatar}
                 style={{ position: "absolute", top: 0, left: 20 }}
               >
                 <Avatar />
@@ -118,19 +131,21 @@ class HomeScreen extends React.Component {
               style={{ paddingBottom: 30 }}
               showsHorizontalScrollIndicator={false}
             >
-              {cards.map((map, index) => (
+              {cards.map((card, index) => (
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    this.props.navigation.push("Section");
+                    this.props.navigation.push("Section", {
+                      section: card
+                    });
                   }}
                 >
                   <Card
-                    title={map.title}
-                    image={map.image}
-                    caption={map.caption}
-                    logo={map.logo}
-                    subtitle={map.subtitle}
+                    title={card.title}
+                    image={card.image}
+                    caption={card.caption}
+                    logo={card.logo}
+                    subtitle={card.subtitle}
                   />
                 </TouchableOpacity>
               ))}
@@ -150,6 +165,7 @@ class HomeScreen extends React.Component {
             ))}
           </ScrollView>
         </AnimatedContainer>
+        <ModalLogin />
       </RootView>
     );
   }
@@ -179,7 +195,8 @@ const Subtitle = styled.Text`
 const Container = styled.View`
   flex: 1;
   background-color: #f0f3f5;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
@@ -232,28 +249,28 @@ const logos = [
 const cards = [
   {
     title: "React Native For Designers",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     caption: "React Native",
     logo: require("../assets/avatar.png"),
     subtitle: "1 of 12 sections"
   },
   {
     title: "Styled Components",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     caption: "React Native",
     logo: require("../assets/avatar.png"),
     subtitle: "2 of 12 sections"
   },
   {
     title: "Props and Icons",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     caption: "React Native",
     logo: require("../assets/avatar.png"),
     subtitle: "3 of 12 sections"
   },
   {
     title: "Static data and loop",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     caption: "React Native",
     logo: require("../assets/avatar.png"),
     subtitle: "4 of 12 sections"
@@ -264,7 +281,7 @@ const courses = [
   {
     title: "Prototype in InVision Studio",
     subtitle: "10 sections",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     logo: require("../assets/avatar.png"),
     author: "zhangneng",
     avatar: require("../assets/avatar.png"),
@@ -273,7 +290,7 @@ const courses = [
   {
     title: "Prototype in InVision Studio",
     subtitle: "10 sections",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     logo: require("../assets/avatar.png"),
     author: "zhangneng",
     avatar: require("../assets/avatar.png"),
@@ -282,7 +299,7 @@ const courses = [
   {
     title: "Prototype in InVision Studio",
     subtitle: "10 sections",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     logo: require("../assets/avatar.png"),
     author: "zhangneng",
     avatar: require("../assets/avatar.png"),
@@ -291,7 +308,7 @@ const courses = [
   {
     title: "Prototype in InVision Studio",
     subtitle: "10 sections",
-    image: require("../assets/avatar.png"),
+    image: require("../assets/background.jpg"),
     logo: require("../assets/avatar.png"),
     author: "zhangneng",
     avatar: require("../assets/avatar.png"),
